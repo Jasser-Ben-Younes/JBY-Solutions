@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JBY Solution - Contact</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header></header>
+
+  <main>
+    <section class="contact-section">
+      <h1>Contact</h1>
+      <p>
+        Use the form below to send a message. For now it just shows a test
+        message when you submit; later this will connect to your backend.
+      </p>
+
+      <div class="contact-grid">
+        <div>
+          <form id="contact-form" class="contact-form">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required />
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit">Send message</button>
+          </form>
+        </div>
+
+        <div>
+          <h2>Other details</h2>
+          <p>
+            Once everything is set up, this section can show project links,
+            documentation, or a small portfolio of your recent work.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> JBY Solution. All rights reserved.
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+  <script src="inject-header.js"></script>  <!-- Add this line before </body> -->
+</body>
+</html>
