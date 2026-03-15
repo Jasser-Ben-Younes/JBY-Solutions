@@ -8,7 +8,6 @@
 </head>
 <body>
   <header></header>
-
   <main>
     <section class="hero">
       <h1>Engineering‑driven solutions by JBY Solution</h1>
@@ -28,16 +27,12 @@
       </p>
     </section>
   </main>
-
-  <footer>
-    &copy; <span id="year"></span> JBY Solution. All rights reserved.
-  </footer>
+  <footer></footer>
 
   <script src="main.js"></script>
   <script>
-    // simple footer year filler
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-  <script src="inject-header.js"></script>  <!-- Add this line before </body> -->
+  <script src="inject-shared.js"></script>
 </body>
 </html>

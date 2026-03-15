@@ -8,18 +8,14 @@
 </head>
 
 <body>
+
   <header></header>
-
-<main></main>
-
-<footer>
-    &copy; <span id="year"></span> JBY Solution. All rights reserved.
-  </footer>
-
+  <main></main>
+  <footer></footer>
   <script src="main.js"></script>
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-  <script src="inject-header.js"></script>  <!-- Add this line before </body> -->
+  <script src="inject-shared.js"></script>
 </body>
 </html>
