@@ -2,19 +2,36 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("JBY Solutions site loaded");
 });
 
-
 function initWaves() {
   const canvas = document.getElementById("waves");
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
-  const width = canvas.width;
-  const height = canvas.height;
 
-  const amplitude = 80;
-  const wavelength = 1000;
-  const speed = 0.001;
-  const letterOffset = 35;
+  // Responsive sizing
+  function resizeCanvas() {
+    const container = canvas.closest('.wave-container');
+    const rect = container.getBoundingClientRect();
+    
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  let width = canvas.clientWidth;
+  let height = canvas.clientHeight + 30;
+
+  // Scale params based on size
+  const aspectRatio = width / height;
+  const amplitude = Math.min(25, height * 0.25);
+  const wavelength = Math.max(300, width * 0.8);
+  const speed = 0.003;
+  const letterOffset = Math.min(18, height * 0.18);
+  
   let t = 0;
 
   function waveY(x, phase) {
@@ -30,7 +47,8 @@ function initWaves() {
   function drawWave(phase, color) {
     ctx.beginPath();
     ctx.strokeStyle = color;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = Math.max(0.8, height / 100);
+    
     for (let x = 0; x < width; x++) {
       const y = waveY(x, phase);
       if (x === 0) ctx.moveTo(x, y);
@@ -47,10 +65,13 @@ function initWaves() {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle);
+    
     ctx.fillStyle = color;
-    ctx.font = "100px monospace";
+    const fontSize = Math.max(20, Math.min(45, height * 0.45));
+    ctx.font = `${fontSize}px monospace`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    
     ctx.fillText(letter, 0, 0);
     ctx.restore();
   }
@@ -58,13 +79,15 @@ function initWaves() {
   function animate() {
     ctx.clearRect(0, 0, width, height);
 
-    drawWave(0, "#747474");
-    drawWave(2 * Math.PI / 3, "#747474");
-    drawWave(4 * Math.PI / 3, "#747474");
+    drawWave(0, "#818181");
+    drawWave(2 * Math.PI / 3, "#818181");
+    drawWave(4 * Math.PI / 3, "#818181");
 
-    drawLetter("J", width * 0.2, 0, "#747474");
-    drawLetter("B", width * 0.5, 2 * Math.PI / 3, "#747474");
-    drawLetter("Y", width * 0.8, 4 * Math.PI / 3, "#747474");
+    // Responsive letter positions
+    const spacing = width / 4;
+    drawLetter("J", spacing, 0, "#ffffff");
+    drawLetter("B", spacing * 2, 2 * Math.PI / 3, "#ffffff");
+    drawLetter("Y", spacing * 3, 4 * Math.PI / 3, "#ffffff");
 
     t += speed;
     requestAnimationFrame(animate);
