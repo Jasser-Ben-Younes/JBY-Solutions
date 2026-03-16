@@ -346,3 +346,18 @@ footer {
 #contact-form.success-hidden {
   display: none;
 }
+
+.wave-container canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wave-container {
+
+  border-radius: 12px;
+  padding: 10px;
+  margin: 2rem auto;
+  max-width: 720px;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.6);
+}

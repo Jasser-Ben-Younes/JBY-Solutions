@@ -48,8 +48,8 @@ form.addEventListener('submit', async (e) => {
     const result = await response.json();
 
     if (result.success) {
-      alert('✅ Message sent! Check your email.');
-      form.reset();
+        form.classList.add('success-hidden');           // Hide form
+        document.getElementById('form-success').style.display = 'block';  // Show success
     } else {
       alert('❌ Error: ' + (result.error || 'Try again'));
     }

@@ -46,11 +46,50 @@ if (!$success) {
 $stmt->close();
 $conn->close();
 
-// Email you
-$to = "your-email@jby-solutions.com";  // YOUR EMAIL
-$subject = "New contact: $name";
-$headers = "From: noreply@jby-solutions.com\r\n";
-mail($to, $subject, "Name: $name\nEmail: $email\nIP: {$_SERVER['REMOTE_ADDR']}\n\n$message", $headers);
+// 1) Email(s) to notify YOU (comma-separated)
+$adminRecipients = "info@jby-solutions.com,jasserben@gmail.com";
 
+// Common data
+$subjectAdmin = "New contact form submission from $name";
+$subjectUser  = "Thanks for contacting JBY Solution";
+$fromAddress  = "noreply@jby-solutions.com";  // must be a domain you own
+$replyTo      = $email;                       // user email for replies
+
+// Build plain-text bodies
+$bodyAdmin = "You have a new contact form submission:\n\n"
+  . "Name: $name\n"
+  . "Email: $email\n"
+  . "IP: " . $_SERVER['REMOTE_ADDR'] . "\n"
+  . "Sent at: " . date('Y-m-d H:i:s') . "\n\n"
+  . "Message:\n$message\n";
+
+$bodyUser = "Hi $name,\n\n"
+  . "Thanks for reaching out to JBY Solution. This is an automatic confirmation "
+  . "that I received your message and will get back to you as soon as possible.\n\n"
+  . "Here is a copy of what you sent:\n\n"
+  . "-----------------------------\n"
+  . "$message\n"
+  . "-----------------------------\n\n"
+  . "Regards,\n"
+  . "JBY Solutions\n";
+
+// Build headers
+$headers = [];
+$headers[] = "From: JBY Solution <{$fromAddress}>";
+$headers[] = "Reply-To: {$replyTo}";
+$headers[] = "X-Mailer: PHP/" . phpversion();
+$headersStr = implode("\r\n", $headers);
+
+// 2) Send mail to you (multiple recipients allowed, comma-separated)
+$mailAdminOk = mail($adminRecipients, $subjectAdmin, $bodyAdmin, $headersStr);
+
+// 3) Send auto-reply to user
+$mailUserOk = mail($email, $subjectUser, $bodyUser, $headersStr);
+
+// Optional: check if both sends succeeded
+if (!$mailAdminOk || !$mailUserOk) {
+    // don't fail the whole request, just log or include a warning in JSON
+    // error_log("Mail sending failed for contact form");
+}
 echo json_encode(["success" => "Message saved + emailed!"]);
 ?>
