@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php $catalogue = require __DIR__ . '/products.php';
+$gcode = $catalogue['G-Code Post-Processor'];
+$kuka  = $catalogue['KUKA KRL G-Code Post-Processor'];
+?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -25,13 +28,13 @@
           <div class="product-body">
             <h2>G-Code Post-Processor</h2>
             <p>Converts CAM output to clean, machine-ready G-Code. Compatible with standard CNC controllers.</p>
-            <span class="product-price">€29.99</span>
+            <span class="product-price"><?= htmlspecialchars($gcode['display']) ?></span>
           </div>
           <div class="card-actions">
-            <a class="btn-secondary" href="product-gcode.html">Preview</a>
+            <a class="btn-secondary" href="product-gcode.php">Preview</a>
             <button class="btn-primary btn-buy"
                     data-product="G-Code Post-Processor"
-                    data-price="€29.99">
+                    data-price="<?= htmlspecialchars($gcode['display']) ?>">
               Buy Now
             </button>
           </div>
@@ -46,13 +49,13 @@
           <div class="product-body">
             <h2>KUKA KRL G-Code Post-Processor</h2>
             <p>Translates G-Code to KUKA Robot Language (KRL) for seamless integration with KUKA robot controllers.</p>
-            <span class="product-price">€49.99</span>
+            <span class="product-price"><?= htmlspecialchars($kuka['display']) ?></span>
           </div>
           <div class="card-actions">
-            <a class="btn-secondary" href="product-kuka.html">Preview</a>
+            <a class="btn-secondary" href="product-kuka.php">Preview</a>
             <button class="btn-primary btn-buy"
                     data-product="KUKA KRL G-Code Post-Processor"
-                    data-price="€49.99">
+                    data-price="<?= htmlspecialchars($kuka['display']) ?>">
               Buy Now
             </button>
           </div>
@@ -120,7 +123,6 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
   <script src="inject-shared.js"></script>
-  <!-- Replace YOUR_PAYPAL_CLIENT_ID with your client ID from developer.paypal.com -->
   <script src="https://www.paypal.com/sdk/js?client-id=AezzTHzS_1xMbOkSrdrQlQW7haRJz_Q2j1ZOtZqXy4ycN-2a7u1Es0hY8cj_lVhSMW8aRdzDIryWNmDC&currency=EUR&intent=capture"></script>
   <script src="webshop.js"></script>
 </body>

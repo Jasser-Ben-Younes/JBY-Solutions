@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+$catalogue = require __DIR__ . '/products.php';
+$p = $catalogue['KUKA KRL G-Code Post-Processor'];
+?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -13,7 +16,7 @@
     <section class="product-detail-section">
 
       <!-- Back link -->
-      <a class="back-link" href="webshop.html">&#8592; Back to Shop</a>
+      <a class="back-link" href="webshop.php">&#8592; Back to Shop</a>
 
       <!-- Hero -->
       <div class="product-detail-hero">
@@ -22,10 +25,10 @@
           <p class="product-detail-tagline">
             Bridge the gap between CAM and your KUKA robot — output native KRL from any G-Code toolpath.
           </p>
-          <span class="product-price product-price-lg">€49.99</span>
+          <span class="product-price product-price-lg"><?= htmlspecialchars($p['display']) ?></span>
           <button class="btn-primary btn-buy btn-detail-buy"
                   data-product="KUKA KRL G-Code Post-Processor"
-                  data-price="€49.99">
+                  data-price="<?= htmlspecialchars($p['display']) ?>">
             Buy Now
           </button>
         </div>
@@ -165,11 +168,11 @@
             </ul>
           </div>
           <div class="aside-card aside-buy">
-            <span class="product-price">€49.99</span>
+            <span class="product-price"><?= htmlspecialchars($p['display']) ?></span>
             <p>One-time purchase. No subscription.</p>
             <button class="btn-primary btn-buy btn-large shop-submit"
                     data-product="KUKA KRL G-Code Post-Processor"
-                    data-price="€49.99">
+                    data-price="<?= htmlspecialchars($p['display']) ?>">
               Buy Now
             </button>
           </div>
@@ -234,7 +237,6 @@
   <script src="main.js"></script>
   <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   <script src="inject-shared.js"></script>
-  <!-- Replace YOUR_PAYPAL_CLIENT_ID with your client ID from developer.paypal.com -->
   <script src="https://www.paypal.com/sdk/js?client-id=AezzTHzS_1xMbOkSrdrQlQW7haRJz_Q2j1ZOtZqXy4ycN-2a7u1Es0hY8cj_lVhSMW8aRdzDIryWNmDC&currency=EUR&intent=capture"></script>
   <script src="webshop.js"></script>
 </body>

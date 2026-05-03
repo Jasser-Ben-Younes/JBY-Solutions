@@ -14,6 +14,7 @@
   let currentProduct = '';
   let currentPrice   = '';
   let paypalInstance = null;
+  let lastError      = null; // stash error before PayPal's onError fires
 
   function openModal(product, price) {
     currentProduct = product;
@@ -106,38 +107,54 @@
       },
 
       createOrder: async () => {
-        const body = new FormData();
-        body.append('product', currentProduct);
-        body.append('price',   currentPrice);
-        const res  = await fetch('paypal-create-order.php', { method: 'POST', body });
-        const json = await res.json();
-        if (json.error) throw new Error(json.error);
-        return json.orderID;
-      },
-
-      onApprove: async data => {
-        const body = new FormData();
-        body.append('orderID', data.orderID);
-        body.append('product', currentProduct);
-        body.append('price',   currentPrice);
-        body.append('name',    form.elements['name'].value.trim());
-        body.append('email',   form.elements['email'].value.trim());
-
-        const res  = await fetch('paypal-capture-order.php', { method: 'POST', body });
-        const json = await res.json();
-
-        if (json.success) {
-          stepPayment.hidden = true;
-          successDiv.hidden  = false;
-        } else {
-          goToContact();
-          showError(json.error || 'Payment could not be completed. Please try again.');
+        try {
+          const body = new FormData();
+          body.append('product', currentProduct);
+          body.append('price',   currentPrice);
+          const res  = await fetch('paypal-create-order.php', { method: 'POST', body });
+          const json = await res.json();
+          if (json.error) {
+            lastError = 'Order creation failed: ' + json.error;
+            throw new Error(json.error);
+          }
+          return json.orderID;
+        } catch (err) {
+          if (!lastError) lastError = 'Network error reaching server: ' + err.message;
+          throw err;
         }
       },
 
-      onError: () => {
+      onApprove: async data => {
+        try {
+          const body = new FormData();
+          body.append('orderID', data.orderID);
+          body.append('product', currentProduct);
+          body.append('price',   currentPrice);
+          body.append('name',    form.elements['name'].value.trim());
+          body.append('email',   form.elements['email'].value.trim());
+
+          const res  = await fetch('paypal-capture-order.php', { method: 'POST', body });
+          const json = await res.json();
+
+          if (json.success) {
+            stepPayment.hidden = true;
+            successDiv.hidden  = false;
+          } else {
+            goToContact();
+            showError('Capture failed: ' + (json.error || 'unknown error'));
+          }
+        } catch (err) {
+          goToContact();
+          showError('Network error during capture: ' + err.message);
+        }
+      },
+
+      onError: (err) => {
         goToContact();
-        showError('Something went wrong with the payment. Please try again.');
+        const msg = lastError || (err && err.message) || 'Unknown PayPal error';
+        showError('Payment error — ' + msg);
+        console.error('[PayPal onError]', err);
+        lastError = null;
       },
 
       onCancel: () => {
