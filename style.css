@@ -742,9 +742,132 @@ footer {
   width: 100%;
 }
 
+/* ── Hamburger (hidden on desktop) ── */
+.nav-toggle {
+  display: none;
+}
+
+/* ── Mobile — 768px and below ── */
 @media (max-width: 768px) {
+
+  body {
+    padding-bottom: 3.5rem;
+  }
+
+  main {
+    padding: 0 1rem;
+    margin: 1.5rem auto;
+  }
+
+  /* Navbar: relative so the dropdown can anchor to it */
+  .navbar {
+    position: relative;
+    padding: 0 1rem;
+    gap: 0;
+  }
+
+  /* Logo keeps its desktop width — aspect ratio preserved */
+
+  /* Hamburger button */
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 0.75rem 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Dropdown: absolute overlay — never displaces page content */
+  .navbar ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.4rem 0.75rem 0.75rem;
+    background: #111827;
+    border-top: 1px solid #1f2937;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    z-index: 500;
+    /* Animate in/out with opacity + subtle slide */
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .navbar ul.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .navbar ul li {
+    border-bottom: 1px solid #1f2937;
+  }
+
+  .navbar ul li:last-child {
+    border-bottom: none;
+  }
+
+  .navbar a {
+    padding: 0.8rem 0.5rem;
+    font-size: 1rem;
+    border-radius: 0.4rem;
+    display: block;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 2rem 0;
+  }
+
+  .hero h1 {
+    font-size: 1.65rem;
+  }
+
+  /* ── Shop ── */
+  .shop-section {
+    padding: 2rem 0 4rem;
+  }
+
+  .shop-section h1 {
+    font-size: 1.6rem;
+  }
+
+  /* ── Contact ── */
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .form-column {
+    padding: 1.5rem;
+  }
+
+  /* ── Product detail ── */
   .product-detail-hero {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .product-detail-body {
@@ -753,5 +876,50 @@ footer {
 
   .product-detail-aside {
     position: static;
+  }
+
+  .product-detail-info h1 {
+    font-size: 1.5rem;
+  }
+
+  /* ── Modal ── */
+  .modal-box {
+    padding: 1.5rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* ── Very small screens — 480px and below ── */
+@media (max-width: 480px) {
+
+  .hero h1 {
+    font-size: 1.35rem;
+  }
+
+  .card-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .card-actions .btn-secondary,
+  .card-actions .btn-buy {
+    text-align: center;
+    width: 100%;
+  }
+
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-box {
+    border-radius: 1rem 1rem 0 0;
+    max-height: 95vh;
+    padding: 1.25rem;
+  }
+
+  .product-detail-image {
+    display: none;
   }
 }

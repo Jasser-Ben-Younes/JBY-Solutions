@@ -3,12 +3,39 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("header.html")
     .then((response) => response.text())
     .then((headerHTML) => {
-      const headerEl = document.querySelector("header");
-      headerEl.innerHTML = headerHTML.trim();
+      document.querySelector("header").innerHTML = headerHTML.trim();
 
-      // Start waves if function exists and canvas is present
       if (typeof initWaves === "function" && document.getElementById("waves")) {
         initWaves();
+      }
+
+      // Hamburger menu
+      const toggle   = document.getElementById("nav-toggle");
+      const navLinks = document.getElementById("nav-links");
+      if (toggle && navLinks) {
+        toggle.addEventListener("click", () => {
+          const open = navLinks.classList.toggle("open");
+          toggle.classList.toggle("open", open);
+          toggle.setAttribute("aria-expanded", String(open));
+        });
+
+        // Close when any nav link is tapped
+        navLinks.querySelectorAll("a").forEach(a =>
+          a.addEventListener("click", () => {
+            navLinks.classList.remove("open");
+            toggle.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          })
+        );
+
+        // Close when tapping outside the navbar
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest(".navbar")) {
+            navLinks.classList.remove("open");
+            toggle.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
       }
     })
     .catch((err) => console.error("Failed to load header:", err));
