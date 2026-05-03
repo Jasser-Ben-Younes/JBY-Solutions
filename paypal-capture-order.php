@@ -19,8 +19,8 @@ if (!$orderID || !$product || strlen($name) < 2 || !filter_var($email, FILTER_VA
 }
 
 // Must match paypal-create-order.php
-define('PAYPAL_CLIENT_ID',     'YOUR_PAYPAL_CLIENT_ID');
-define('PAYPAL_CLIENT_SECRET', 'YOUR_PAYPAL_CLIENT_SECRET');
+define('PAYPAL_CLIENT_ID',     'AW8PCsFtYESP3HkqGB98edHizOtCl0osJogJtNPDIlZ0nrR5NINFpTvjIsYB0HUOnqBXXVpyhMHYGNj2');
+define('PAYPAL_CLIENT_SECRET', 'EP3HkqGB98edHizOtCl0osJogJtNPDIlZ0nrR5NINFpTvjIsYB0HUOnqBXXVpyhMHYGNj2');
 define('PAYPAL_BASE',          'https://api-m.sandbox.paypal.com');
 
 function paypalAccessToken() {

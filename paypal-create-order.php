@@ -21,8 +21,8 @@ if (!$product || !is_numeric($amount) || (float)$amount <= 0) {
 // ── PayPal credentials ────────────────────────────────────────────
 // Get these from https://developer.paypal.com → Apps & Credentials
 // Use sandbox credentials while testing, live credentials when ready
-define('PAYPAL_CLIENT_ID',     'YOUR_PAYPAL_CLIENT_ID');
-define('PAYPAL_CLIENT_SECRET', 'YOUR_PAYPAL_CLIENT_SECRET');
+define('PAYPAL_CLIENT_ID',     'AW8PCsFtYESP3HkqGB98edHizOtCl0osJogJtNPDIlZ0nrR5NINFpTvjIsYB0HUOnqBXXVpyhMHYGNj2');
+define('PAYPAL_CLIENT_SECRET', 'EP3HkqGB98edHizOtCl0osJogJtNPDIlZ0nrR5NINFpTvjIsYB0HUOnqBXXVpyhMHYGNj2');
 
 // Sandbox:  https://api-m.sandbox.paypal.com
 // Live:     https://api-m.paypal.com
