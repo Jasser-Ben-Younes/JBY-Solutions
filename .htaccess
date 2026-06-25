@@ -1,0 +1,13 @@
+Options -Indexes
+RewriteEngine On
+
+# ── Redirect old .html shop pages to .php ────────────────────────────────────
+RewriteRule ^webshop\.html$        /webshop.php        [R=301,L]
+RewriteRule ^product-gcode\.html$  /product-gcode.php  [R=301,L]
+RewriteRule ^product-kuka\.html$   /product-kuka.php   [R=301,L]
+
+# ── Block spam IP from contact/shop form endpoints ───────────────────────────
+<RequireAll>
+    Require all granted
+    Require not ip 188.126.89.69
+</RequireAll>

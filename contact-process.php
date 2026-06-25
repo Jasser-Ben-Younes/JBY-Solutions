@@ -1,6 +1,22 @@
 <?php
 header('Content-Type: application/json'); // For JS fetch
 
+// ── Blocked IPs ───────────────────────────────────────────────────────────────
+$blocked_ips = [
+    '188.126.89.69',
+];
+if (in_array($_SERVER['REMOTE_ADDR'] ?? '', $blocked_ips)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Forbidden']);
+    exit;
+}
+
+// ── Blocked names ─────────────────────────────────────────────────────────────
+$blocked_names = [
+    'brandonbrutt',
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
     http_response_code(405);
     echo json_encode(["error" => "Invalid request"]);
@@ -10,6 +26,14 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
 $name = trim($_POST['name'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $message = trim($_POST['message'] ?? '');
+
+// ── Block by name ─────────────────────────────────────────────────────────────
+if (in_array(strtolower($name), $blocked_names)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Forbidden']);
+    exit;
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 // Server validation
 if (strlen($name) < 2 || strlen($email) < 5 || strlen($message) < 10) {
