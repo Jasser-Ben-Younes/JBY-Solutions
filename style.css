@@ -182,9 +182,13 @@ footer {
   color: #6b7280;
 }
 
+body.contact-page main {
+  max-width: 1300px;
+}
+
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1.4fr 420px;
   gap: 3rem;
   align-items: start;
 }
@@ -251,6 +255,23 @@ footer {
 .error-list li {
   margin: 0 2rem 0.25rem;
   font-size: 0.875rem;
+}
+
+.recaptcha-disclosure {
+  margin-top: 1rem;
+  font-size: 0.62rem;
+  color: #d1d5db;
+  line-height: 1.3;
+  opacity: 0.7;
+}
+
+.recaptcha-disclosure a {
+  color: #d1d5db;
+  text-decoration: underline;
+}
+
+.recaptcha-disclosure a:hover {
+  color: #9ca3af;
 }
 
 .info-column h2 {

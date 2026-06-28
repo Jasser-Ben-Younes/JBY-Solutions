@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JBY Solution - Contact</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://www.google.com/recaptcha/api.js?render=6LeVyzotAAAAAHP-J9MdBUXJ1UXhUwzZdf_PqWZd"></script>
+  <style>
+    .grecaptcha-badge { visibility: hidden; }
+  </style>
 </head>
-<body>
+<body class="contact-page">
   <header></header>
 
     <main>
@@ -20,6 +24,14 @@
         <div class="contact-grid">
         <div class="form-column">
             <form id="contact-form" method="POST" action="contact-process.php">
+            <!-- Honeypot: invisible to humans, irresistible to bots. Real users never see or fill this. -->
+            <div class="form-group" style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true">
+                <label for="website">Website</label>
+                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+            <input type="hidden" id="form_loaded_at" name="form_loaded_at" value="" />
+            <input type="hidden" id="recaptcha_token" name="recaptcha_token" value="" />
+
             <div class="form-group">
                 <label for="name">Full name</label>
                 <input id="name" name="name" type="text" required minlength="2" maxlength="100" />
@@ -41,6 +53,11 @@
 
             <div id="form-errors" class="error-list"></div>
             </form>
+            <p class="recaptcha-disclosure">
+                This site is protected by reCAPTCHA and the Google
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and
+                <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
+            </p>
             <div id="form-success" class="success-section" style="display: none;">
             <div class="success-content">
                 <svg class="success-icon" viewBox="0 0 64 64">

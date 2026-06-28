@@ -2,8 +2,9 @@
 session_start();
 
 define('ALLOWED_IPS', [
-    '176.2.99.9',
-    '2a0d:3341:b908:c908:2d72:c17c:8684:c2dc',
+    '176.2.90.255',
+    '2a0d:3341:b908:c908:2d72:c17c:8684:c2dc',       // ← Replace with your allowed IP address(es)
+    // '1.2.3.4',    // ← Add more IPs here if needed
 ]);
 
 define('AUTH_USER', 'admin');

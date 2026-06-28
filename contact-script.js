@@ -1,8 +1,14 @@
+const RECAPTCHA_SITE_KEY = '6LeVyzotAAAAAHP-J9MdBUXJ1UXhUwzZdf_PqWZd';
+
 const form = document.getElementById('contact-form');
 const btn = form.querySelector('button');
 const errorsDiv = document.getElementById('form-errors');
 
 errorsDiv.style.display = 'none';
+
+// Honeytrap: timestamp the moment the form became interactive.
+// Bots usually submit within milliseconds; humans take a few seconds.
+document.getElementById('form_loaded_at').value = Date.now();
 
 function validateForm() {
   const errors = [];
@@ -40,6 +46,15 @@ form.addEventListener('submit', async (e) => {
   btn.disabled = true;
 
   try {
+    const token = await new Promise((resolve, reject) => {
+      grecaptcha.ready(() => {
+        grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact' })
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+    document.getElementById('recaptcha_token').value = token;
+
     const formData = new FormData(form);
     const response = await fetch('contact-process.php', {
       method: 'POST',

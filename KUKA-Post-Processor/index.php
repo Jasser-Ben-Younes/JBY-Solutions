@@ -2,7 +2,7 @@
 session_start();
 
 define('ALLOWED_IPS', [
-    '176.2.99.9',
+    '176.2.90.255',
     '209.198.140.68',
     '2a0d:3341:b908:c908:2d72:c17c:8684:c2dc',
 ]);
@@ -93,12 +93,30 @@ if (!in_array($client_ip, ALLOWED_IPS, true) || empty($_SESSION['kuka_auth'])) {
       font-size: 0.9rem;
     }
 
+    /* Section groups */
+    .param-section {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 1rem 1.1rem 1.1rem;
+      margin-bottom: 1rem;
+      background: #fff;
+    }
+
+    .param-section legend {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 0.4rem;
+    }
+
     /* Params */
     .params-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem 1.5rem;
+      margin-top: 0.5rem;
     }
 
     .param-group label {
@@ -109,7 +127,8 @@ if (!in_array($client_ip, ALLOWED_IPS, true) || empty($_SESSION['kuka_auth'])) {
       margin-bottom: 0.3rem;
     }
 
-    .param-group input {
+    .param-group input[type="number"],
+    .param-group input[type="text"] {
       width: 100%;
       padding: 0.5rem 0.75rem;
       border: 1px solid #d1d5db;
@@ -123,6 +142,34 @@ if (!in_array($client_ip, ALLOWED_IPS, true) || empty($_SESSION['kuka_auth'])) {
     .param-group input:focus {
       outline: none;
       border-color: #2563eb;
+    }
+
+    .param-group input:disabled {
+      background: #f3f4f6;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    /* Checkbox rows */
+    .param-group.checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-top: 1.6rem;
+    }
+
+    .param-group.checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #2563eb;
+      flex-shrink: 0;
+    }
+
+    .param-group.checkbox-group label {
+      margin-bottom: 0;
+      font-size: 0.88rem;
+      cursor: pointer;
     }
 
     /* Progress */
@@ -266,20 +313,59 @@ if (!in_array($client_ip, ALLOWED_IPS, true) || empty($_SESSION['kuka_auth'])) {
         <input type="file" id="file-input" accept=".gcode,.gc,.g,.nc,.txt" hidden />
       </div>
 
-      <!-- Parameters -->
-      <div class="params-grid">
-        <div class="param-group">
-          <label for="x_translate">X Translate (mm)</label>
-          <input type="number" id="x_translate" value="-1000" step="any" />
+      <!-- Location and Orientation -->
+      <fieldset class="param-section">
+        <legend>Location and Orientation</legend>
+        <div class="params-grid">
+          <div class="param-group">
+            <label for="x_translate">X Translation (mm)</label>
+            <input type="number" id="x_translate" value="-1000" step="any" />
+          </div>
+          <div class="param-group">
+            <label for="a_rotate">A Angle (°)</label>
+            <input type="number" id="a_rotate" value="90" step="any" />
+          </div>
+          <div class="param-group">
+            <label for="y_translate">Y Translation (mm)</label>
+            <input type="number" id="y_translate" value="-1000" step="any" />
+          </div>
+          <div class="param-group">
+            <label for="b_rotate">B Angle (°)</label>
+            <input type="number" id="b_rotate" value="45" step="any" />
+          </div>
+          <div class="param-group">
+            <label for="z_translate">Z Translation (mm)</label>
+            <input type="number" id="z_translate" value="0" step="any" />
+          </div>
+          <div class="param-group">
+            <label for="c_rotate">C Angle (°)</label>
+            <input type="number" id="c_rotate" value="180" step="any" />
+          </div>
         </div>
-        <div class="param-group">
-          <label for="y_translate">Y Translate (mm)</label>
-          <input type="number" id="y_translate" value="-1000" step="any" />
+      </fieldset>
+
+      <!-- Carriage Movement -->
+      <fieldset class="param-section">
+        <legend>Carriage Movement</legend>
+        <div class="params-grid">
+          <div class="param-group checkbox-group">
+            <input type="checkbox" id="move_carriage" checked />
+            <label for="move_carriage">Move Carriage</label>
+          </div>
+          <div class="param-group">
+            <label for="carriage_position">Carriage Position</label>
+            <input type="number" id="carriage_position" step="any" disabled />
+          </div>
+          <div class="param-group checkbox-group">
+            <input type="checkbox" id="stop_at_layer" />
+            <label for="stop_at_layer">Stop Carriage at Specific Layer</label>
+          </div>
+          <div class="param-group">
+            <label for="halting_layer">Halting Layer</label>
+            <input type="number" id="halting_layer" step="1" min="0" disabled />
+          </div>
         </div>
-        <div class="param-group">
-          <label for="z_translate">Z Translate (mm)</label>
-          <input type="number" id="z_translate" value="0" step="any" />
-        </div>
+      </fieldset>
       </div>
 
       <!-- Progress -->

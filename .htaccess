@@ -10,4 +10,5 @@ RewriteRule ^product-kuka\.html$   /product-kuka.php   [R=301,L]
 <RequireAll>
     Require all granted
     Require not ip 188.126.89.69
+    Require not ip 158.173.241.0/24
 </RequireAll>

@@ -27,6 +27,56 @@ $name = trim($_POST['name'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $message = trim($_POST['message'] ?? '');
 
+// ── Honeytrap ──────────────────────────────────────────────────────────────────
+// 1) Hidden field that only bots fill in.
+// 2) Submissions faster than a human could possibly fill the form (bots submit instantly).
+$honeypot = trim($_POST['website'] ?? '');
+$loadedAt = (float) ($_POST['form_loaded_at'] ?? 0);
+$elapsedMs = $loadedAt > 0 ? (microtime(true) * 1000 - $loadedAt) : 0;
+
+if ($honeypot !== '' || $loadedAt === 0.0 || $elapsedMs < 3000) {
+    // Pretend success so the bot has no feedback signal to adapt against.
+    echo json_encode(["success" => "Message saved + emailed!"]);
+    exit;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── reCAPTCHA v3 ──────────────────────────────────────────────────────────────
+$recaptchaSecret = '6LeVyzotAAAAAFK5ZSuI-vBsEWS2CPTSgkDHAFp4';
+$recaptchaToken = $_POST['recaptcha_token'] ?? '';
+
+if ($recaptchaToken === '') {
+    echo json_encode(["success" => "Message saved + emailed!"]); // fake success, no feedback to bots
+    exit;
+}
+
+$verifyUrl = 'https://www.google.com/recaptcha/api/siteverify?' . http_build_query([
+    'secret'   => $recaptchaSecret,
+    'response' => $recaptchaToken,
+    'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+]);
+
+if (function_exists('curl_init')) {
+    $ch = curl_init($verifyUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    $verifyResponse = curl_exec($ch);
+    curl_close($ch);
+} else {
+    $verifyResponse = @file_get_contents($verifyUrl);
+}
+$verifyData = json_decode($verifyResponse ?: '', true) ?? [];
+
+$recaptchaOk = ($verifyData['success'] ?? false)
+    && ($verifyData['action'] ?? '') === 'contact'
+    && ($verifyData['score'] ?? 0) >= 0.5;
+
+if (!$recaptchaOk) {
+    echo json_encode(["success" => "Message saved + emailed!"]); // fake success, no feedback to bots
+    exit;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // ── Block by name ─────────────────────────────────────────────────────────────
 if (in_array(strtolower($name), $blocked_names)) {
     http_response_code(403);
